@@ -3,7 +3,7 @@ const Vehicle = require("../constructors/vehicle");
 require("dotenv").config();
 
 // Replace the uri string with your MongoDB deployment's connection string.
-const mongo_host = process.env.MONGO_HOST || "127.0.0.1";
+const mongo_host = process.env.MONGO_HOST || "127.0.0.1:27017";
 const mongo_user = process.env.MONGO_USERNAME;
 const mongo_pass = process.env.MONGO_PASS;
 const uri =
@@ -13,7 +13,7 @@ const uri =
   mongo_pass +
   "@" +
   mongo_host +
-  ":27017?authSource=admin";
+  "?authSource=admin";
 
 const mongoClient = new MongoClient(uri);
 

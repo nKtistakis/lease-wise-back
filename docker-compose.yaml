@@ -1,0 +1,37 @@
+version: "3.8"
+# env_file:
+#   - .env
+
+services:
+  backend:
+    container_name: leaseback
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASS}@mongodb:27017/mydatabase?authSource=admin
+    networks:
+      - leaseback-network
+
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - leaseback-network
+
+volumes:
+  mongo-data:
+
+networks: # allow services to talk to each other while providing isolation from other docker container, running on the same host
+  leaseback-network:
+    driver: bridge

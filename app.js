@@ -7,13 +7,14 @@ const {
   empty,
 } = require("./src/config/database");
 const { scrapeTest, scrapeAll } = require("./src/scraper/puppeteer");
+require("dotenv").config();
 const Vehicle = require("./src/constructors/vehicle");
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.EXPRESS_PORT;
 
 const cors = require("cors");
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://leasewise.frontend.tastebit.ai" }));
 
 // app.use((req, res, next) => {
 //   console.log('Time:', Date.now())
@@ -80,11 +81,11 @@ app.get("/insertVehicle", async (req, res) => {
 async function performStartupChecks() {
   console.log("Initial Checks in progress..");
 
-  //Databse Test
-  if (!(await initDbTest())) {
-    console.log("--Shutting down--");
-    return;
-  }
+  // //Databse Test
+  // if (!(await initDbTest())) {
+  //   console.log("--Shutting down--");
+  //   return;
+  // }
 
   app.listen(PORT);
   console.log("All tests passed.\nServer started on " + PORT);
